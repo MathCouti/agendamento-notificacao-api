@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,6 +16,8 @@ public class AgendamentoController {
 
     @Autowired
     private AgendamentoService agendamentoService;
+    @Autowired
+    private RestClient.Builder builder;
 
     @PostMapping
     public ResponseEntity<AgendamentoRecordOut> gravarAgendamentos(@RequestBody AgendamentoRecord agendamento){
@@ -24,5 +27,11 @@ public class AgendamentoController {
     @GetMapping("/{id}")
     public ResponseEntity<AgendamentoRecordOut> buscarAgendamentoPorId(@PathVariable("id") Long id){
         return ResponseEntity.ok(agendamentoService.buscarAgendamentoPorId(id));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> cancelamentoAgendamento(@PathVariable("id") Long id){
+        agendamentoService.cancelarAgendamento(id);
+        return ResponseEntity.accepted().build();
     }
 }
