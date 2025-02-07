@@ -3,6 +3,7 @@ package com.mathcouti.agendamentonotificacao.business;
 import com.mathcouti.agendamentonotificacao.business.mapper.IAgendamentoMapper;
 import com.mathcouti.agendamentonotificacao.controller.dto.in.AgendamentoRecord;
 import com.mathcouti.agendamentonotificacao.controller.dto.out.AgendamentoRecordOut;
+import com.mathcouti.agendamentonotificacao.infrastructure.entities.Agendamento;
 import com.mathcouti.agendamentonotificacao.infrastructure.exception.NotFoundException;
 import com.mathcouti.agendamentonotificacao.infrastructure.repositories.AgendamentoRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,4 +31,10 @@ public class AgendamentoService {
                 .orElseThrow(() -> new NotFoundException("Id não encontrado")));
     }
 
+    public void cancelarAgendamento(Long id){
+        Agendamento agendamento = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Id não encontrado"));
+        repository.save(agendamentoMapper.paraEntityCancelamento(agendamento));
+
+    }
 }
